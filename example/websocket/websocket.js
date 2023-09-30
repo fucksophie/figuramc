@@ -9,8 +9,7 @@ let [___, token] = await authenication.getToken();
 
 if(!await http.checkAuth(token)) {
     await authenication.invalidateCache();
-    let [u, t] = await authenication.getToken();
-    uuid = u;
+    let [___, t] = await authenication.getToken();
     token = t;
 }
 
