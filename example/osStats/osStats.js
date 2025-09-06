@@ -22,7 +22,7 @@ ws.addListener("auth", () => {
     console.log('[WS] WS successfully authenicated!');
 
     [
-        /********* Populate this with UUIDs for the players you wish to communicate with! */
+        "21f7143a-45cd-4995-b1e3-6c3c8602ef7c"
     ].forEach((z,i)=>{
         ws.sub(z);
     })

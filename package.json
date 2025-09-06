@@ -5,12 +5,12 @@
   "main": "src/index.js",
   "dependencies": {
     "luaparse": "^0.3.1",
-    "prismarine-auth": "^2.2.0",
-    "prismarine-nbt": "^2.2.1",
-    "ws": "^8.14.1"
+    "prismarine-auth": "^2.7.0",
+    "prismarine-nbt": "^2.7.0",
+    "ws": "^8.18.3"
   },
   "keywords": ["figura", "http", "binary", "c2s", "minecraft", "figuramc", "figuramc.org"],
-  "type": "module", 
+  "type": "module",
   "scripts": {
     "websocket": "node example/websocket/websocket.js",
     "osStats": "node example/osStats/osStats.js"
