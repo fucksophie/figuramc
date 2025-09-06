@@ -26,9 +26,9 @@ ws.addListener("auth", () => {
     ].forEach((z,i)=>{
         ws.sub(z);
     })
-    
+
     setInterval(() => {
-        ws.ping(true, 1648479844 /* osStats*/ , [
+        ws.ping(true, "osStats", [
             {ram: {total: (totalmem()/1e+9).toFixed(3), free: (freemem()/1e+9).toFixed(3)}}])
     }, 5000)
 })

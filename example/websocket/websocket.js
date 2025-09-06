@@ -34,29 +34,29 @@ ws.addListener("auth", () => {
 ws.addListener("ping", async (id, uuid, args) => {
     const avatar = await http.getCachedAvatar(token, uuid, "avatar")
     console.log(`[WS] ${uuid}: ${avatar.pings[id]} (${id}) -`, args)
-    if(avatar.pings[1316789505] /* startWs */ &&
-        avatar.pings[2307212993] /* wsEvent */ && 
-        avatar.pings[1979906075] /* sendWs*/) {
-        if(id == 1316789505) {
+    if(avatar.pings[hashFiguraString("startWs")] /* startWs */ &&
+        avatar.pings[hashFiguraString("wsEvent")] /* wsEvent */ &&
+        avatar.pings[hashFiguraString("sendWs")] /* sendWs*/) {
+        if(id == hashFiguraString("startWs")) {
             if(websocketBridge) return;
             websocketBridge = new WebSocket(args[0]);
 
             websocketBridge.addEventListener("open", () => {
-                ws.ping(true, 2307212993, ["open"])
+                ws.ping(true, "wsEvent", ["open"])
             })
             websocketBridge.addEventListener("close", () => {
                 websocketBridge = false
-                ws.ping(true, 2307212993, ["close"])
+                ws.ping(true, "wsEvent", ["close"])
             })
             websocketBridge.addEventListener("error", () => {
                 websocketBridge = false
-                ws.ping(true, 2307212993, ["close"])
+                ws.ping(true, "wsEvent", ["close"])
             })
             websocketBridge.addEventListener("message", (data) => {
-                ws.ping(true, 2307212993, ["data", data.data])
+                ws.ping(true, "wsEvent", ["data", data.data])
             })
         }
-        if(id == 1979906075) {
+        if(id == hashFiguraString("sendWs")) {
             if(!websocketBridge) return;
             websocketBridge.send(args[0])
         }

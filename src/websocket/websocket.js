@@ -4,28 +4,28 @@ import * as c2s from "./packets/c2s.js"
 import * as s2c from "./packets/s2c.js"
 
 import { getToken, invalidateCache } from "../authenication.js";
-import { clearCaches } from "../http.js";
+import { clearCaches, hashFiguraString } from "../http.js";
 import { uuidSigBitsToStr } from "./packets.js";
 
 export class WebsocketClient extends EventEmitter {
-    /** 
+    /**
     * @type {WebSocket}
     */
     #ws;
-    
+
     #subs = []
 
     constructor(uri) {
         super();
         this.uri = uri;
     }
-    
+
     sub(uuid) {
         if(this.#subs.includes(uuid)) return;
         this.#subs.push(uuid);
         this.#ws.send(c2s.sub(uuid));
     }
-    
+
     unsub(uuid) {
         if(!this.#subs.includes(uuid)) return;
         this.#subs = this.#subs.filter(z => z != uuid);
@@ -38,7 +38,7 @@ export class WebsocketClient extends EventEmitter {
         this.attach();
     }
     ping(sync, id, args) {
-        this.#ws.send(c2s.ping(sync, id, args))
+        this.#ws.send(c2s.ping(sync, hashFiguraString(id), args))
     }
     attach() {
         this.#ws.addEventListener("open", async () => {

@@ -3,21 +3,25 @@ import * as luaparse from "luaparse"
 
 export const host = "figura.moonlight-devs.org"
 
-function int32touint32(int32) { // TODO: This is slow and kind of disgusting.
-    let a = new ArrayBuffer(4)
-    let dv = new DataView(a);
-    dv.setUint32(0, int32)
-    let nr = dv.getUint32(0)
-    a = null
-    return nr;
+// figura magic mandates that
+// - hashCode the identifier pings.*identifier*
+// - add 1 to this, and times it by 31
+// - stuff it into a uint32
+// - obviously, int32 = uint32, but without this convertion
+//  equals signs don't work
+export function hashFiguraString(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+        h = Math.imul(31, h) + str.charCodeAt(i);
+        h |= 0;
+    }
+
+    let result = Math.imul(h + 1, 31);
+
+    return result >>> 0;
 }
 
-function hashCode(str) {
-    return Array.from(str)
-        .reduce((s, c) => Math.imul(31, s) + c.charCodeAt(0) | 0, 0)
-}
-
-const avatars = new Map() 
+const avatars = new Map()
 const users = new Map()
 
 const backendAddress = "https://"+host+"/api"
@@ -96,20 +100,13 @@ export const getCachedAvatar = async (token, uuid, id) => {
             if(!z.identifier.base) return;
             if(!z.identifier.identifier) return;
             if(z.identifier.base.name == "pings") {
-                // figura magic mandates that
-                // - hashCode the identifier pings.*identifier*
-                // - add 1 to this, and times it by 31
-                // - stuff it into a uint32
-                // - obviously, int32 = uint32, but without this convertion
-                //  equals signs don't work
-                
-                avatar.pings[int32touint32((hashCode(z.identifier.identifier.name)+1)*31)] = z.identifier.identifier.name;
+                avatar.pings[hashFiguraString(z.identifier.identifier.name)] = z.identifier.identifier.name;
             }
         })
     })
-    
+
     avatars.set(uuid+"-"+id, avatar);
-    
+
     return avatar;
 }
 
