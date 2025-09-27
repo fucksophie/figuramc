@@ -1,5 +1,5 @@
 {
-  "name": "figuramc",
+  "name": "figura",
   "version": "1.0.0",
   "description": "Figura WS/HTTP API for NodeJS. (meant for Backend v2)",
   "main": "src/index.js",
@@ -9,12 +9,20 @@
     "prismarine-nbt": "^2.7.0",
     "ws": "^8.18.3"
   },
-  "keywords": ["figura", "http", "binary", "c2s", "minecraft", "figuramc", "figuramc.org"],
+  "keywords": [
+    "figura",
+    "http",
+    "binary",
+    "c2s",
+    "minecraft",
+    "figura"
+  ],
   "type": "module",
   "scripts": {
     "websocket": "node example/websocket/websocket.js",
     "osStats": "node example/osStats/osStats.js"
   },
+  "exports": "./src/index.js",
   "author": "yourfriend",
   "license": "GPL-3.0-or-later"
 }
